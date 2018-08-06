@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.1)
-project(example)
+cmake_minimum_required(VERSION 3.10)
+project(voromesh)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -29,3 +29,10 @@ find_package(LIBIGL REQUIRED QUIET)
 file(GLOB SRCFILES *.cpp)
 add_executable(${PROJECT_NAME}_bin ${SRCFILES})
 target_link_libraries(${PROJECT_NAME}_bin igl::core igl::opengl_glfw)
+
+add_library(voro++ STATIC IMPORTED) # or STATIC instead of SHARED
+set_target_properties(voro++ PROPERTIES
+  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/voro++/lib/libvoro++.a"
+  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/voro++/include"
+)
+target_link_libraries(${PROJECT_NAME}_bin voro++)
